@@ -1,23 +1,44 @@
-# EventHub API
+# EventHub API + Documentação
 
-API REST para a avaliação prática de Programação Front-End.
+Este projeto serve a documentação e a API no mesmo domínio.
 
-## Endpoints
+## URLs
 
-- `GET /`
-- `GET /eventos`
-- `GET /eventos/:id`
-- `GET /categorias`
-- `GET /eventos?categoria=Tecnologia`
+Documentação:
 
-## Executar localmente
-
-```bash
-npm install
-npm start
+```text
+https://api-eventos-tau.vercel.app/
 ```
 
-## Deploy no Vercel
+API:
 
-Importe o repositório no Vercel e faça o deploy sem adicionar `vercel.json`.
-O arquivo `server.js` é o entrypoint da aplicação Express.
+```text
+https://api-eventos-tau.vercel.app/api
+```
+
+Endpoints:
+
+```text
+GET /api/eventos
+GET /api/eventos/:id
+GET /api/categorias
+GET /api/eventos?categoria=Tecnologia
+```
+
+## Estrutura
+
+```text
+eventhub-api/
+├── data/
+│   └── eventos.json
+├── public/
+│   └── index.html
+├── server.js
+├── package.json
+└── README.md
+```
+
+## Deploy
+
+Substitua os arquivos do repositório por estes e faça um novo deploy no Vercel.
+Não é necessário adicionar `vercel.json`.

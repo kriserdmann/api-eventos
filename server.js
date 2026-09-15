@@ -1,26 +1,28 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const eventos = require("./data/eventos.json");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({
     nome: "EventHub API",
     versao: "1.0.0",
     endpoints: [
-      "GET /eventos",
-      "GET /eventos/:id",
-      "GET /categorias",
-      "GET /eventos?categoria=Tecnologia"
+      "GET /api/eventos",
+      "GET /api/eventos/:id",
+      "GET /api/categorias",
+      "GET /api/eventos?categoria=Tecnologia"
     ]
   });
 });
 
-app.get("/eventos", (req, res) => {
+app.get("/api/eventos", (req, res) => {
   const { categoria } = req.query;
 
   if (!categoria) {
@@ -35,7 +37,7 @@ app.get("/eventos", (req, res) => {
   return res.json(filtrados);
 });
 
-app.get("/eventos/:id", (req, res) => {
+app.get("/api/eventos/:id", (req, res) => {
   const id = Number(req.params.id);
   const evento = eventos.find((evento) => evento.id === id);
 
@@ -48,7 +50,7 @@ app.get("/eventos/:id", (req, res) => {
   return res.json(evento);
 });
 
-app.get("/categorias", (req, res) => {
+app.get("/api/categorias", (req, res) => {
   const categorias = [
     ...new Set(eventos.map((evento) => evento.categoria))
   ];
