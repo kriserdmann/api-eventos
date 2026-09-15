@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventHub API - Documentação</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --green: #15803d;
+      --green-soft: #f0fdf4;
+      --code: #111827;
+      --code-text: #e5e7eb;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .version {
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: var(--primary);
+      background: var(--primary-soft);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    main {
+      padding: 56px 0 72px;
+    }
+
+    .hero {
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.1;
+      margin: 0 0 14px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0;
+    }
+
+    .base-url {
+      margin-top: 26px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .base-url strong {
+      font-size: .85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    code.inline {
+      color: var(--primary);
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    h2 {
+      font-size: 1.65rem;
+      margin: 42px 0 18px;
+    }
+
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .method {
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: .8rem;
+      font-weight: 800;
+    }
+
+    .route {
+      font-family: Consolas, Monaco, monospace;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .endpoint p {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .note {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+
+    .note p {
+      margin: 0;
+      color: #334155;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 18px;
+      border-radius: 12px;
+      background: var(--code);
+      color: var(--code-text);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: #fafafa;
+      font-size: .85rem;
+    }
+
+    td {
+      color: #475467;
+    }
+
+    td:first-child {
+      color: var(--text);
+      font-family: Consolas, Monaco, monospace;
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 16px;
+      font-size: .9rem;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-top: 36px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .endpoint {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">E</div>
+        <span>EventHub API</span>
+      </div>
+      <span class="version">v1.0.0</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Documentação da API de Eventos</h1>
+      <p>
+        API REST utilizada para consulta de eventos. Os dados são retornados no formato
+        <strong>JSON</strong> e podem ser consumidos por aplicações front-end por meio de requisições HTTP.
+      </p>
+
+      <div class="base-url">
+        <strong>URL base</strong>
+        <code class="inline">https://api-eventos-tau.vercel.app</code>
+      </div>
+    </section>
+
+    <section>
+      <h2>Endpoints disponíveis</h2>
+
+      <article class="endpoint">
+        <div class="endpoint-title">
+          <span class="method">GET</span>
+          <span class="route">/eventos</span>
+        </div>
+        <p>Retorna a lista completa de eventos disponíveis.</p>
+
+        <strong>Exemplo de requisição</strong>
+        <pre>GET https://api-eventos-tau.vercel.app/eventos</pre>
+
+        <strong>Formato da resposta</strong>
+        <pre>[
+  {
+    "id": 1,
+    "titulo": "Workshop de React",
+    "descricao": "Aprenda os principais conceitos para criar interfaces modernas e componentizadas com React.",
+    "descricaoCompleta": "Este workshop apresenta uma introdução prática ao desenvolvimento de interfaces com React...",
+    "data": "2026-10-20",
+    "horario": "19:00 às 22:00",
+    "local": "Centro de Treinamento",
+    "categoria": "Tecnologia",
+    "modalidade": "Presencial",
+    "vagas": 25,
+    "inscricao": "Gratuita",
+    "imagem": "https://..."
+  }
+]</pre>
+      </article>
+
+      <article class="endpoint">
+        <div class="endpoint-title">
+          <span class="method">GET</span>
+          <span class="route">/eventos/:id</span>
+        </div>
+        <p>Retorna os dados de um único evento a partir de seu identificador.</p>
+
+        <strong>Exemplo de requisição</strong>
+        <pre>GET https://api-eventos-tau.vercel.app/eventos/1</pre>
+
+        <strong>Formato da resposta</strong>
+        <pre>{
+  "id": 1,
+  "titulo": "Workshop de React",
+  "descricao": "Aprenda os principais conceitos para criar interfaces modernas e componentizadas com React.",
+  "descricaoCompleta": "Este workshop apresenta uma introdução prática ao desenvolvimento de interfaces com React...",
+  "data": "2026-10-20",
+  "horario": "19:00 às 22:00",
+  "local": "Centro de Treinamento",
+  "categoria": "Tecnologia",
+  "modalidade": "Presencial",
+  "vagas": 25,
+  "inscricao": "Gratuita",
+  "imagem": "https://..."
+}</pre>
+
+        <div class="note">
+          <p>
+            Substitua <strong>:id</strong> pelo identificador do evento desejado.
+            Exemplo: <code>/eventos/3</code>.
+          </p>
+        </div>
+      </article>
+
+      <article class="endpoint">
+        <div class="endpoint-title">
+          <span class="method">GET</span>
+          <span class="route">/categorias</span>
+        </div>
+        <p>Retorna as categorias disponíveis nos eventos cadastrados.</p>
+
+        <strong>Exemplo de requisição</strong>
+        <pre>GET https://api-eventos-tau.vercel.app/categorias</pre>
+
+        <strong>Formato da resposta</strong>
+        <pre>[
+  "Tecnologia",
+  "Design",
+  "Desenvolvimento",
+  "Negócios"
+]</pre>
+      </article>
+
+      <article class="endpoint">
+        <div class="endpoint-title">
+          <span class="method">GET</span>
+          <span class="route">/eventos?categoria=Tecnologia</span>
+        </div>
+        <p>Retorna apenas os eventos pertencentes à categoria informada.</p>
+
+        <strong>Exemplo de requisição</strong>
+        <pre>GET https://api-eventos-tau.vercel.app/eventos?categoria=Tecnologia</pre>
+
+        <strong>Formato da resposta</strong>
+        <pre>[
+  {
+    "id": 1,
+    "titulo": "Workshop de React",
+    "categoria": "Tecnologia",
+    ...
+  },
+  {
+    "id": 3,
+    "titulo": "Introdução ao Node.js",
+    "categoria": "Tecnologia",
+    ...
+  }
+]</pre>
+      </article>
+    </section>
+
+    <section>
+      <h2>Estrutura dos dados</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>id</td><td>Number</td><td>Identificador único do evento.</td></tr>
+            <tr><td>titulo</td><td>String</td><td>Nome do evento.</td></tr>
+            <tr><td>descricao</td><td>String</td><td>Descrição resumida do evento.</td></tr>
+            <tr><td>descricaoCompleta</td><td>String</td><td>Descrição detalhada do evento.</td></tr>
+            <tr><td>data</td><td>String</td><td>Data no formato AAAA-MM-DD.</td></tr>
+            <tr><td>horario</td><td>String</td><td>Horário previsto para realização.</td></tr>
+            <tr><td>local</td><td>String</td><td>Local de realização.</td></tr>
+            <tr><td>categoria</td><td>String</td><td>Categoria à qual o evento pertence.</td></tr>
+            <tr><td>modalidade</td><td>String</td><td>Modalidade de realização do evento.</td></tr>
+            <tr><td>vagas</td><td>Number</td><td>Quantidade de vagas disponíveis.</td></tr>
+            <tr><td>inscricao</td><td>String</td><td>Informação sobre a inscrição.</td></tr>
+            <tr><td>imagem</td><td>String</td><td>URL da imagem do evento.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Exemplo de consumo</h2>
+      <p>Uma requisição pode ser realizada utilizando a API nativa <code>fetch()</code> do JavaScript.</p>
+
+      <pre>fetch("https://api-eventos-tau.vercel.app/eventos")
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });</pre>
+    </section>
+
+    <section>
+      <h2>Códigos de resposta</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Significado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>200</td>
+              <td>Requisição realizada com sucesso.</td>
+            </tr>
+            <tr>
+              <td>404</td>
+              <td>Evento não encontrado ao consultar um identificador inexistente.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <strong>Exemplo de erro</strong>
+      <pre>{
+  "erro": "Evento não encontrado"
+}</pre>
+    </section>
+  </main>
+
+  <footer>
+    EventHub API · Documentação para avaliação de Programação Front-End
+  </footer>
+</body>
+</html>
